@@ -1,14 +1,13 @@
 #pragma once
 #include <vector>
-#include <cstdint>
 #include <string>
 #include <algorithm>
 
 template <class Hash32>
-class SimpleHLL {
+class HyperLogLog {
 public:
     // B: число бит на индекс регистра, m = 2^B
-    SimpleHLL(int B, Hash32 hash)
+    HyperLogLog(int B, Hash32 hash)
         : B_(B), m_(1u << B), hash_(hash), reg_(m_, 0) {}
 
     void add(const std::string& x) {
@@ -30,7 +29,9 @@ public:
 
         for (uint8_t v : reg_) {
             sum += std::ldexp(1.0, -static_cast<int>(v)); // 2^{-v}
-            if (v == 0) ++V;
+            if (v == 0) {
+                ++V;
+            }
         }
 
         double E = alpha_m(m_) * static_cast<double>(m_) * static_cast<double>(m_) / sum;
@@ -71,7 +72,7 @@ private:
         if (m == 64) {
             return 0.709;
         }
-        return 0.7213 / (1.0 + 1.079 / (double)m);
+        return 0.7213 / (1.0 + 1.079 / static_cast<double>(m));
     }
 
     int B_;
