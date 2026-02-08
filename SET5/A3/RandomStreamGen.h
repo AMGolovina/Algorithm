@@ -13,7 +13,9 @@ public:
     std::vector<std::string> genStream() {
         std::vector<std::string> s;
         s.reserve(n_);
-        for (std::size_t i = 0; i < n_; ++i) s.push_back(genOne());
+        for (std::size_t i = 0; i < n_; ++i) {
+            s.push_back(genOne());
+        }
         return s;
     }
 
@@ -22,10 +24,14 @@ public:
         std::vector<std::size_t> c;
         for (std::size_t p = stepPercent; p <= 100; p += stepPercent) {
             std::size_t k = (n_ * p) / 100;
-            if (k == 0) k = 1;
+            if (k == 0) {
+                k = 1;
+            }
             c.push_back(k);
         }
-        if (c.empty() || c.back() != n_) c.push_back(n_);
+        if (c.empty() || c.back() != n_) {
+            c.push_back(n_);
+        }
         return c;
     }
 
@@ -41,7 +47,9 @@ private:
     std::string genOne() {
         std::size_t len = lenDist_(rng_);
         std::string out(len, '\0');
-        for (std::size_t i = 0; i < len; ++i) out[i] = alphabet()[chDist_(rng_)];
+        for (std::size_t i = 0; i < len; ++i) {
+            out[i] = alphabet()[chDist_(rng_)];
+        }
         return out;
     }
 
